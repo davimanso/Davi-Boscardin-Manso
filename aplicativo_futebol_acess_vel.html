@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futebol Acessível - Guia Esportivo para Baixa Visão</title>
+  <style>
+    /* VARIABLES DE TEMA / CORES DE ALTO CONTRASTE */
+    :root {
+      --bg-color: #0d0d0d;
+      --card-bg: #1a1a1a;
+      --text-color: #ffffff;
+      --accent-color: #ffff00; /* Amarelo de alto contraste */
+      --secondary-accent: #00ffff; /* Ciano para destaques */
+      --border-color: #ffffff;
+      --focus-outline: #00ff00;
+      --font-scale: 1rem;
+      --btn-bg: #333333;
+    }
+
+    /* MODO ALTO CONTRASTE INVERTIDO (AMARELO NO PRETO) */
+    body.theme-yellow-black {
+      --bg-color: #000000;
+      --card-bg: #121212;
+      --text-color: #ffff00;
+      --accent-color: #ffffff;
+      --secondary-accent: #ffff00;
+      --border-color: #ffff00;
+      --btn-bg: #222200;
+    }
+
+    /* MODO CLARO DE ALTO CONTRASTE */
+    body.theme-light {
+      --bg-color: #ffffff;
+      --card-bg: #f0f0f0;
+      --text-color: #000000;
+      --accent-color: #0000cc;
+      --secondary-accent: #006600;
+      --border-color: #000000;
+      --btn-bg: #e0e0e0;
+    }
+
+    /* RESET E BÁSICO */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Arial', 'Helvetica', sans-serif;
+      font-size: calc(18px * var(--font-scale));
+      line-height: 1.6;
+      padding: 15px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* INDICADOR DE FOCO PARA NAVEGAÇÃO POR TECLADO */
+    *:focus {
+      outline: 5px solid var(--focus-outline) !important;
+      outline-offset: 4px;
+    }
+
+    /* ACESSIBILIDADE - BARRA DE FERRAMENTAS FIXA */
+    .accessibility-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--bg-color);
+      border: 3px solid var(--border-color);
+      padding: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 8px;
+    }
+
+    .accessibility-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* BOTÕES */
+    button, select {
+      background-color: var(--btn-bg);
+      color: var(--text-color);
+      border: 3px solid var(--border-color);
+      padding: 10px 16px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button:hover, select:hover {
+      background-color: var(--accent-color);
+      color: #000;
+    }
+
+    /* CABEÇALHO PRINCIPAL */
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+      border-bottom: 4px solid var(--accent-color);
+      padding-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .subheading {
+      font-size: 1.1em;
+      margin-top: 5px;
+    }
+
+    .date-badge {
+      display: inline-block;
+      margin-top: 8px;
+      background-color: var(--btn-bg);
+      border: 2px solid var(--accent-color);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    /* NAV DOS CAMPEONATOS */
+    nav {
+      margin-bottom: 25px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      padding: 15px;
+      font-size: 1.2em;
+      text-transform: uppercase;
+    }
+
+    .nav-btn.active {
+      background-color: var(--accent-color);
+      color: #000;
+      border-color: var(--text-color);
+    }
+
+    /* CONTEÚDO DOS CAMPEONATOS */
+    .league-section {
+      display: none;
+      background-color: var(--card-bg);
+      border: 4px solid var(--border-color);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+    }
+
+    .league-section.active {
+      display: block;
+    }
+
+    .league-title {
+      font-size: 1.8em;
+      color: var(--secondary-accent);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* TABELAS ACESSÍVEIS */
+    .table-container {
+      overflow-x: auto;
+      margin-top: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 1.1em;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border: 2px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--btn-bg);
+      color: var(--accent-color);
+      font-size: 1.2em;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* DESTAQUE ZONAS DE TABELA */
+    tr.g4 {
+      border-left: 8px solid #00ff00;
+    }
+
+    tr.z4 {
+      border-left: 8px solid #ff3333;
+    }
+
+    /* INSTRUÇÕES E RODAPÉ */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      border-top: 3px solid var(--border-color);
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE FERRAMENTAS DE ACESSIBILIDADE FIXA -->
+  <aside class="accessibility-bar" aria-label="Ferramentas de Acessibilidade">
+    <strong id="acc-title">Acessibilidade:</strong>
+    <div class="accessibility-tools" role="region" aria-labelledby="acc-title">
+      <button onclick="changeFontSize(1)" aria-label="Aumentar tamanho do texto">A+ Ampliar</button>
+      <button onclick="changeFontSize(-1)" aria-label="Diminuir tamanho do texto">A- Reduzir</button>
+      <button onclick="toggleTheme('default')" aria-label="Tema Alto Contraste Amarelo e Branco">Contraste Padrão</button>
+      <button onclick="toggleTheme('yellow-black')" aria-label="Tema Fundo Preto e Texto Amarelo">Preto e Amarelo</button>
+      <button onclick="toggleTheme('light')" aria-label="Tema Fundo Claro e Texto Escuro">Fundo Claro</button>
+      <button onclick="stopSpeech()" aria-label="Parar leitura em voz alta">⏹ Parar Voz</button>
+    </div>
+  </aside>
+
+  <!-- CABEÇALHO -->
+  <header>
+    <h1>Futebol Acessível</h1>
+    <p class="subheading">Acompanhe o Brasileirão e ligas europeias com suporte completo de voz e acessibilidade visual.</p>
+    <div class="date-badge">📅 Tabelas Atualizadas</div>
+  </header>
+
+  <main>
+    <!-- MENU DE NAVEGAÇÃO DOS CAMPEONATOS -->
+    <nav aria-label="Navegação por Campeonatos">
+      <ul class="nav-list" role="tablist">
+        <li>
+          <button class="nav-btn active" id="tab-brasileirao" role="tab" aria-selected="true" aria-controls="brasileirao" onclick="switchLeague('brasileirao')">
+            🇧🇷 Brasileirão
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="tab-premier" role="tab" aria-selected="false" aria-controls="premier" onclick="switchLeague('premier')">
+            🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="tab-laliga" role="tab" aria-selected="false" aria-controls="laliga" onclick="switchLeague('laliga')">
+            🇪🇸 LaLiga
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="tab-bundesliga" role="tab" aria-selected="false" aria-controls="bundesliga" onclick="switchLeague('bundesliga')">
+            🇩🇪 Bundesliga
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- BRASILEIRÃO -->
+    <section id="brasileirao" class="league-section active" role="tabpanel" aria-labelledby="tab-brasileirao">
+      <div class="league-title">
+        <h2>Campeonato Brasileiro - Classificação Completa</h2>
+        <button onclick="readSection('brasileirao')" aria-label="Ouvir informações da tabela do Brasileirão">🔊 Ouvir Tabela</button>
+      </div>
+
+      <div class="table-container">
+        <table aria-label="Tabela de classificação completa do Campeonato Brasileiro">
+          <thead>
+            <tr>
+              <th scope="col">Pos</th>
+              <th scope="col">Clube</th>
+              <th scope="col">PTS</th>
+              <th scope="col">J</th>
+              <th scope="col">V</th>
+              <th scope="col">E</th>
+              <th scope="col">D</th>
+              <th scope="col">GP</th>
+              <th scope="col">GC</th>
+              <th scope="col">SG</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="g4">
+              <td>1º</td>
+              <td>Palmeiras</td>
+              <td><strong>48</strong></td>
+              <td>22</td>
+              <td>14</td>
+              <td>6</td>
+              <td>2</td>
+              <td>38</td>
+              <td>16</td>
+              <td>22</td>
+            </tr>
+            <tr class="g4">
+              <td>2º</td>
+              <td>Flamengo</td>
+              <td><strong>42</strong></td>
+              <td>21</td>
+              <td>12</td>
+              <td>6</td>
+              <td>3</td>
+              <td>39</td>
+              <td>18</td>
+              <td>21</td>
+            </tr>
+            <tr class="g4">
+              <td>3º</td>
+              <td>Athletico-PR</td>
+              <td><strong>40</strong></td>
+              <td>22</td>
+              <td>12</td>
+              <td>4</td>
+              <td>6</td>
+              <td>30</td>
+              <td>19</td>
+              <td>11</td>
+            </tr>
+            <tr class="g4">
+              <td>4º</td>
+              <td>Fluminense</td>
+              <td><strong>35</strong></td>
+              <td>22</td>
+              <td>9</td>
+              <td>8</td>
+              <td>5</td>
+              <td>31</td>
+              <td>26</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>5º</td>
+              <td>Cruzeiro</td>
+              <td><strong>33</strong></td>
+              <td>22</td>
+              <td>9</td>
+              <td>6</td>
+              <td>7</td>
+              <td>30</td>
+              <td>31</td>
+              <td>-1</td>
+            </tr>
+            <tr>
+              <td>6º</td>
+              <td>Bahia</td>
+              <td><strong>33</strong></td>
+              <td>22</td>
+              <td>8</td>
+              <td>9</td>
+              <td>5</td>
+              <td>29</td>
+              <td>25</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>7º</td>
+              <td>Corinthians</td>
+              <td><strong>32</strong></td>
+              <td>22</td>
+              <td>8</td>
+              <td>8</td>
+              <td>6</td>
+              <td>24</td>
+              <td>20</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>8º</td>
+              <td>Bragantino</td>
+              <td><strong>31</strong></td>
+              <td>21</td>
+              <td>9</td>
+              <td>4</td>
+              <td>8</td>
+              <td>26</td>
+              <td>22</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>9º</td>
+              <td>Botafogo</td>
+              <td><strong>30</strong></td>
+              <td>21</td>
+              <td>8</td>
+              <td>6</td>
+              <td>7</td>
+              <td>35</td>
+              <td>33</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>10º</td>
+              <td>Coritiba</td>
+              <td><strong>30</strong></td>
+              <td>22</td>
+              <td>8</td>
+              <td>6</td>
+              <td>8</td>
+              <td>27</td>
+              <td>29</td>
+              <td>-2</td>
+            </tr>
+            <tr>
+              <td>11º</td>
+              <td>Atlético-MG</td>
+              <td><strong>29</strong></td>
+              <td>21</td>
+              <td>8</td>
+              <td>5</td>
+              <td>8</td>
+              <td>27</td>
+              <td>27</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>12º</td>
+              <td>São Paulo</td>
+              <td><strong>26</strong></td>
+              <td>21</td>
+              <td>7</td>
+              <td>5</td>
+              <td>9</td>
+              <td>26</td>
+              <td>25</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>13º</td>
+              <td>EC Vitória</td>
+              <td><strong>26</strong></td>
+              <td>22</td>
+              <td>7</td>
+              <td>5</td>
+              <td>10</td>
+              <td>22</td>
+              <td>33</td>
+              <td>-11</td>
+            </tr>
+            <tr>
+              <td>14º</td>
+              <td>Grêmio</td>
+              <td><strong>25</strong></td>
+              <td>21</td>
+              <td>6</td>
+              <td>7</td>
+              <td>8</td>
+              <td>24</td>
+              <td>27</td>
+              <td>-3</td>
+            </tr>
+            <tr>
+              <td>15º</td>
+              <td>Mirassol</td>
+              <td><strong>23</strong></td>
+              <td>21</td>
+              <td>6</td>
+              <td>5</td>
+              <td>10</td>
+              <td>24</td>
+              <td>30</td>
+              <td>-6</td>
+            </tr>
+            <tr>
+              <td>16º</td>
+              <td>Internacional</td>
+              <td><strong>23</strong></td>
+              <td>22</td>
+              <td>5</td>
+              <td>8</td>
+              <td>9</td>
+              <td>23</td>
+              <td>27</td>
+              <td>-4</td>
+            </tr>
+            <tr class="z4">
+              <td>17º</td>
+              <td>Santos</td>
+              <td><strong>22</strong></td>
+              <td>21</td>
+              <td>5</td>
+              <td>7</td>
+              <td>9</td>
+              <td>29</td>
+              <td>35</td>
+              <td>-6</td>
+            </tr>
+            <tr class="z4">
+              <td>18º</td>
+              <td>Vasco da Gama</td>
+              <td><strong>22</strong></td>
+              <td>21</td>
+              <td>5</td>
+              <td>7</td>
+              <td>9</td>
+              <td>23</td>
+              <td>31</td>
+              <td>-8</td>
+            </tr>
+            <tr class="z4">
+              <td>19º</td>
+              <td>Remo</td>
+              <td><strong>22</strong></td>
+              <td>22</td>
+              <td>5</td>
+              <td>7</td>
+              <td>10</td>
+              <td>26</td>
+              <td>36</td>
+              <td>-10</td>
+            </tr>
+            <tr class="z4">
+              <td>20º</td>
+              <td>Chapecoense</td>
+              <td><strong>10</strong></td>
+              <td>21</td>
+              <td>1</td>
+              <td>7</td>
+              <td>13</td>
+              <td>20</td>
+              <td>43</td>
+              <td>-23</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PREMIER LEAGUE -->
+    <section id="premier" class="league-section" role="tabpanel" aria-labelledby="tab-premier">
+      <div class="league-title">
+        <h2>Premier League - Classificação Completa</h2>
+        <button onclick="readSection('premier')" aria-label="Ouvir informações da tabela da Premier League">🔊 Ouvir Tabela</button>
+      </div>
+
+      <div class="table-container">
+        <table aria-label="Tabela de classificação completa da Premier League">
+          <thead>
+            <tr>
+              <th scope="col">Pos</th>
+              <th scope="col">Clube</th>
+              <th scope="col">PTS</th>
+              <th scope="col">J</th>
+              <th scope="col">V</th>
+              <th scope="col">E</th>
+              <th scope="col">D</th>
+              <th scope="col">GP</th>
+              <th scope="col">GC</th>
+              <th scope="col">SG</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="g4">
+              <td>1º</td>
+              <td>Arsenal</td>
+              <td><strong>85</strong></td>
+              <td>38</td>
+              <td>26</td>
+              <td>7</td>
+              <td>5</td>
+              <td>71</td>
+              <td>27</td>
+              <td>44</td>
+            </tr>
+            <tr class="g4">
+              <td>2º</td>
+              <td>City</td>
+              <td><strong>78</strong></td>
+              <td>38</td>
+              <td>23</td>
+              <td>9</td>
+              <td>6</td>
+              <td>77</td>
+              <td>35</td>
+              <td>42</td>
+            </tr>
+            <tr class="g4">
+              <td>3º</td>
+              <td>Manchester United</td>
+              <td><strong>71</strong></td>
+              <td>38</td>
+              <td>20</td>
+              <td>11</td>
+              <td>7</td>
+              <td>69</td>
+              <td>50</td>
+              <td>19</td>
+            </tr>
+            <tr class="g4">
+              <td>4º</td>
+              <td>Aston Villa</td>
+              <td><strong>65</strong></td>
+              <td>38</td>
+              <td>19</td>
+              <td>8</td>
+              <td>11</td>
+              <td>56</td>
+              <td>49</td>
+              <td>7</td>
+            </tr>
+            <tr>
+              <td>5º</td>
+              <td>Liverpool</td>
+              <td><strong>60</strong></td>
+              <td>38</td>
+              <td>17</td>
+              <td>9</td>
+              <td>12</td>
+              <td>63</td>
+              <td>53</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>6º</td>
+              <td>Bournemouth</td>
+              <td><strong>57</strong></td>
+              <td>38</td>
+              <td>13</td>
+              <td>18</td>
+              <td>7</td>
+              <td>58</td>
+              <td>54</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>7º</td>
+              <td>Sunderland</td>
+              <td><strong>54</strong></td>
+              <td>38</td>
+              <td>14</td>
+              <td>12</td>
+              <td>12</td>
+              <td>42</td>
+              <td>48</td>
+              <td>-6</td>
+            </tr>
+            <tr>
+              <td>8º</td>
+              <td>Brighton</td>
+              <td><strong>53</strong></td>
+              <td>38</td>
+              <td>14</td>
+              <td>11</td>
+              <td>13</td>
+              <td>52</td>
+              <td>46</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <td>9º</td>
+              <td>Brentford</td>
+              <td><strong>53</strong></td>
+              <td>38</td>
+              <td>14</td>
+              <td>11</td>
+              <td>13</td>
+              <td>55</td>
+              <td>52</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>10º</td>
+              <td>Chelsea</td>
+              <td><strong>52</strong></td>
+              <td>38</td>
+              <td>14</td>
+              <td>10</td>
+              <td>14</td>
+              <td>58</td>
+              <td>52</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <td>11º</td>
+              <td>Fulham</td>
+              <td><strong>52</strong></td>
+              <td>38</td>
+              <td>15</td>
+              <td>7</td>
+              <td>16</td>
+              <td>47</td>
+              <td>51</td>
+              <td>-4</td>
+            </tr>
+            <tr>
+              <td>12º</td>
+              <td>Newcastle</td>
+              <td><strong>49</strong></td>
+              <td>38</td>
+              <td>14</td>
+              <td>7</td>
+              <td>17</td>
+              <td>53</td>
+              <td>55</td>
+              <td>-2</td>
+            </tr>
+            <tr>
+              <td>13º</td>
+              <td>Everton</td>
+              <td><strong>49</strong></td>
+              <td>38</td>
+              <td>13</td>
+              <td>10</td>
+              <td>15</td>
+              <td>47</td>
+              <td>50</td>
+              <td>-3</td>
+            </tr>
+            <tr>
+              <td>14º</td>
+              <td>Leeds</td>
+              <td><strong>47</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>14</td>
+              <td>13</td>
+              <td>49</td>
+              <td>56</td>
+              <td>-7</td>
+            </tr>
+            <tr>
+              <td>15º</td>
+              <td>Crystal Palace</td>
+              <td><strong>45</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>12</td>
+              <td>15</td>
+              <td>41</td>
+              <td>51</td>
+              <td>-10</td>
+            </tr>
+            <tr>
+              <td>16º</td>
+              <td>Nottingham Forest</td>
+              <td><strong>44</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>11</td>
+              <td>16</td>
+              <td>48</td>
+              <td>51</td>
+              <td>-3</td>
+            </tr>
+            <tr>
+              <td>17º</td>
+              <td>Spurs</td>
+              <td><strong>41</strong></td>
+              <td>38</td>
+              <td>10</td>
+              <td>11</td>
+              <td>17</td>
+              <td>48</td>
+              <td>57</td>
+              <td>-9</td>
+            </tr>
+            <tr class="z4">
+              <td>18º</td>
+              <td>West Ham</td>
+              <td><strong>39</strong></td>
+              <td>38</td>
+              <td>10</td>
+              <td>9</td>
+              <td>19</td>
+              <td>46</td>
+              <td>65</td>
+              <td>-19</td>
+            </tr>
+            <tr class="z4">
+              <td>19º</td>
+              <td>Burnley</td>
+              <td><strong>22</strong></td>
+              <td>38</td>
+              <td>4</td>
+              <td>10</td>
+              <td>24</td>
+              <td>38</td>
+              <td>75</td>
+              <td>-37</td>
+            </tr>
+            <tr class="z4">
+              <td>20º</td>
+              <td>Wolves</td>
+              <td><strong>20</strong></td>
+              <td>38</td>
+              <td>3</td>
+              <td>11</td>
+              <td>24</td>
+              <td>27</td>
+              <td>68</td>
+              <td>-41</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LALIGA -->
+    <section id="laliga" class="league-section" role="tabpanel" aria-labelledby="tab-laliga">
+      <div class="league-title">
+        <h2>LaLiga - Classificação Completa</h2>
+        <button onclick="readSection('laliga')" aria-label="Ouvir informações da tabela da LaLiga">🔊 Ouvir Tabela</button>
+      </div>
+
+      <div class="table-container">
+        <table aria-label="Tabela de classificação completa da LaLiga">
+          <thead>
+            <tr>
+              <th scope="col">Pos</th>
+              <th scope="col">Clube</th>
+              <th scope="col">PTS</th>
+              <th scope="col">J</th>
+              <th scope="col">V</th>
+              <th scope="col">E</th>
+              <th scope="col">D</th>
+              <th scope="col">GP</th>
+              <th scope="col">GC</th>
+              <th scope="col">SG</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="g4">
+              <td>1º</td>
+              <td>Barcelona</td>
+              <td><strong>94</strong></td>
+              <td>38</td>
+              <td>31</td>
+              <td>1</td>
+              <td>6</td>
+              <td>95</td>
+              <td>36</td>
+              <td>59</td>
+            </tr>
+            <tr class="g4">
+              <td>2º</td>
+              <td>Real Madrid</td>
+              <td><strong>86</strong></td>
+              <td>38</td>
+              <td>27</td>
+              <td>5</td>
+              <td>6</td>
+              <td>77</td>
+              <td>35</td>
+              <td>42</td>
+            </tr>
+            <tr class="g4">
+              <td>3º</td>
+              <td>Villarreal</td>
+              <td><strong>72</strong></td>
+              <td>38</td>
+              <td>22</td>
+              <td>6</td>
+              <td>10</td>
+              <td>72</td>
+              <td>46</td>
+              <td>26</td>
+            </tr>
+            <tr class="g4">
+              <td>4º</td>
+              <td>Atlético Madrid</td>
+              <td><strong>69</strong></td>
+              <td>38</td>
+              <td>21</td>
+              <td>5</td>
+              <td>11</td>
+              <td>62</td>
+              <td>44</td>
+              <td>18</td>
+            </tr>
+            <tr>
+              <td>5º</td>
+              <td>Betis</td>
+              <td><strong>60</strong></td>
+              <td>38</td>
+              <td>15</td>
+              <td>15</td>
+              <td>8</td>
+              <td>59</td>
+              <td>48</td>
+              <td>11</td>
+            </tr>
+            <tr>
+              <td>6º</td>
+              <td>Celta de Vigo</td>
+              <td><strong>54</strong></td>
+              <td>38</td>
+              <td>14</td>
+              <td>12</td>
+              <td>12</td>
+              <td>53</td>
+              <td>48</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>7º</td>
+              <td>Getafe</td>
+              <td><strong>51</strong></td>
+              <td>38</td>
+              <td>15</td>
+              <td>6</td>
+              <td>17</td>
+              <td>32</td>
+              <td>38</td>
+              <td>-6</td>
+            </tr>
+            <tr>
+              <td>8º</td>
+              <td>Rayo Vallecano</td>
+              <td><strong>50</strong></td>
+              <td>38</td>
+              <td>12</td>
+              <td>14</td>
+              <td>12</td>
+              <td>41</td>
+              <td>44</td>
+              <td>-3</td>
+            </tr>
+            <tr>
+              <td>9º</td>
+              <td>Valencia</td>
+              <td><strong>49</strong></td>
+              <td>38</td>
+              <td>13</td>
+              <td>10</td>
+              <td>15</td>
+              <td>46</td>
+              <td>55</td>
+              <td>-9</td>
+            </tr>
+            <tr>
+              <td>10º</td>
+              <td>Real Sociedad</td>
+              <td><strong>46</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>13</td>
+              <td>14</td>
+              <td>59</td>
+              <td>61</td>
+              <td>-2</td>
+            </tr>
+            <tr>
+              <td>11º</td>
+              <td>Espanyol</td>
+              <td><strong>46</strong></td>
+              <td>38</td>
+              <td>12</td>
+              <td>10</td>
+              <td>16</td>
+              <td>43</td>
+              <td>55</td>
+              <td>-12</td>
+            </tr>
+            <tr>
+              <td>12º</td>
+              <td>Ath. Bilbao</td>
+              <td><strong>45</strong></td>
+              <td>38</td>
+              <td>13</td>
+              <td>6</td>
+              <td>19</td>
+              <td>43</td>
+              <td>58</td>
+              <td>-15</td>
+            </tr>
+            <tr>
+              <td>13º</td>
+              <td>Sevilla</td>
+              <td><strong>43</strong></td>
+              <td>38</td>
+              <td>12</td>
+              <td>7</td>
+              <td>19</td>
+              <td>46</td>
+              <td>60</td>
+              <td>-14</td>
+            </tr>
+            <tr>
+              <td>14º</td>
+              <td>Alavés</td>
+              <td><strong>43</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>10</td>
+              <td>17</td>
+              <td>44</td>
+              <td>56</td>
+              <td>-12</td>
+            </tr>
+            <tr>
+              <td>15º</td>
+              <td>Elche</td>
+              <td><strong>43</strong></td>
+              <td>38</td>
+              <td>10</td>
+              <td>13</td>
+              <td>15</td>
+              <td>49</td>
+              <td>57</td>
+              <td>-8</td>
+            </tr>
+            <tr>
+              <td>16º</td>
+              <td>Levante</td>
+              <td><strong>42</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>9</td>
+              <td>18</td>
+              <td>47</td>
+              <td>61</td>
+              <td>-14</td>
+            </tr>
+            <tr>
+              <td>17º</td>
+              <td>Osasuna</td>
+              <td><strong>42</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>9</td>
+              <td>18</td>
+              <td>44</td>
+              <td>50</td>
+              <td>-6</td>
+            </tr>
+            <tr class="z4">
+              <td>18º</td>
+              <td>Mallorca</td>
+              <td><strong>42</strong></td>
+              <td>38</td>
+              <td>11</td>
+              <td>9</td>
+              <td>18</td>
+              <td>47</td>
+              <td>57</td>
+              <td>-10</td>
+            </tr>
+            <tr class="z4">
+              <td>19º</td>
+              <td>Girona</td>
+              <td><strong>41</strong></td>
+              <td>38</td>
+              <td>9</td>
+              <td>14</td>
+              <td>15</td>
+              <td>39</td>
+              <td>55</td>
+              <td>-16</td>
+            </tr>
+            <tr class="z4">
+              <td>20º</td>
+              <td>Oviedo</td>
+              <td><strong>29</strong></td>
+              <td>38</td>
+              <td>6</td>
+              <td>11</td>
+              <td>21</td>
+              <td>26</td>
+              <td>60</td>
+              <td>-34</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- BUNDESLIGA -->
+    <section id="bundesliga" class="league-section" role="tabpanel" aria-labelledby="tab-bundesliga">
+      <div class="league-title">
+        <h2>Bundesliga - Classificação Completa</h2>
+        <button onclick="readSection('bundesliga')" aria-label="Ouvir informações da tabela da Bundesliga">🔊 Ouvir Tabela</button>
+      </div>
+
+      <div class="table-container">
+        <table aria-label="Tabela de classificação completa da Bundesliga">
+          <thead>
+            <tr>
+              <th scope="col">Pos</th>
+              <th scope="col">Clube</th>
+              <th scope="col">PTS</th>
+              <th scope="col">J</th>
+              <th scope="col">V</th>
+              <th scope="col">E</th>
+              <th scope="col">D</th>
+              <th scope="col">GP</th>
+              <th scope="col">GC</th>
+              <th scope="col">SG</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="g4">
+              <td>1º</td>
+              <td>Bayern</td>
+              <td><strong>89</strong></td>
+              <td>34</td>
+              <td>28</td>
+              <td>5</td>
+              <td>1</td>
+              <td>122</td>
+              <td>36</td>
+              <td>86</td>
+            </tr>
+            <tr class="g4">
+              <td>2º</td>
+              <td>Borussia</td>
+              <td><strong>73</strong></td>
+              <td>34</td>
+              <td>22</td>
+              <td>7</td>
+              <td>5</td>
+              <td>70</td>
+              <td>34</td>
+              <td>36</td>
+            </tr>
+            <tr class="g4">
+              <td>3º</td>
+              <td>RB Leipzig</td>
+              <td><strong>65</strong></td>
+              <td>34</td>
+              <td>20</td>
+              <td>5</td>
+              <td>9</td>
+              <td>66</td>
+              <td>47</td>
+              <td>19</td>
+            </tr>
+            <tr class="g4">
+              <td>4º</td>
+              <td>VfB Stuttgart</td>
+              <td><strong>62</strong></td>
+              <td>34</td>
+              <td>18</td>
+              <td>8</td>
+              <td>8</td>
+              <td>71</td>
+              <td>49</td>
+              <td>22</td>
+            </tr>
+            <tr>
+              <td>5º</td>
+              <td>Hoffenheim</td>
+              <td><strong>61</strong></td>
+              <td>34</td>
+              <td>18</td>
+              <td>7</td>
+              <td>9</td>
+              <td>65</td>
+              <td>52</td>
+              <td>13</td>
+            </tr>
+            <tr>
+              <td>6º</td>
+              <td>Leverkusen</td>
+              <td><strong>59</strong></td>
+              <td>34</td>
+              <td>17</td>
+              <td>8</td>
+              <td>9</td>
+              <td>68</td>
+              <td>47</td>
+              <td>21</td>
+            </tr>
+            <tr>
+              <td>7º</td>
+              <td>Freiburg</td>
+              <td><strong>47</strong></td>
+              <td>34</td>
+              <td>13</td>
+              <td>8</td>
+              <td>13</td>
+              <td>51</td>
+              <td>57</td>
+              <td>-6</td>
+            </tr>
+            <tr>
+              <td>8º</td>
+              <td>Eintracht</td>
+              <td><strong>44</strong></td>
+              <td>34</td>
+              <td>11</td>
+              <td>11</td>
+              <td>12</td>
+              <td>61</td>
+              <td>65</td>
+              <td>-4</td>
+            </tr>
+            <tr>
+              <td>9º</td>
+              <td>Augsburg</td>
+              <td><strong>43</strong></td>
+              <td>34</td>
+              <td>12</td>
+              <td>7</td>
+              <td>15</td>
+              <td>45</td>
+              <td>61</td>
+              <td>-16</td>
+            </tr>
+            <tr>
+              <td>10º</td>
+              <td>Mainz 05</td>
+              <td><strong>40</strong></td>
+              <td>34</td>
+              <td>10</td>
+              <td>10</td>
+              <td>14</td>
+              <td>44</td>
+              <td>53</td>
+              <td>-9</td>
+            </tr>
+            <tr>
+              <td>11º</td>
+              <td>Union Berlin</td>
+              <td><strong>39</strong></td>
+              <td>34</td>
+              <td>10</td>
+              <td>9</td>
+              <td>15</td>
+              <td>44</td>
+              <td>58</td>
+              <td>-14</td>
+            </tr>
+            <tr>
+              <td>12º</td>
+              <td>Mönchengladbach</td>
+              <td><strong>38</strong></td>
+              <td>34</td>
+              <td>9</td>
+              <td>11</td>
+              <td>14</td>
+              <td>42</td>
+              <td>53</td>
+              <td>-11</td>
+            </tr>
+            <tr>
+              <td>13º</td>
+              <td>Hamburg</td>
+              <td><strong>38</strong></td>
+              <td>34</td>
+              <td>9</td>
+              <td>11</td>
+              <td>14</td>
+              <td>40</td>
+              <td>54</td>
+              <td>-14</td>
+            </tr>
+            <tr>
+              <td>14º</td>
+              <td>Colônia</td>
+              <td><strong>32</strong></td>
+              <td>34</td>
+              <td>7</td>
+              <td>11</td>
+              <td>16</td>
+              <td>49</td>
+              <td>63</td>
+              <td>-14</td>
+            </tr>
+            <tr>
+              <td>15º</td>
+              <td>Werder Bremen</td>
+              <td><strong>32</strong></td>
+              <td>34</td>
+              <td>8</td>
+              <td>8</td>
+              <td>18</td>
+              <td>37</td>
+              <td>60</td>
+              <td>-23</td>
+            </tr>
+            <tr class="z4">
+              <td>16º</td>
+              <td>Wolfsburg</td>
+              <td><strong>29</strong></td>
+              <td>34</td>
+              <td>7</td>
+              <td>8</td>
+              <td>19</td>
+              <td>45</td>
+              <td>69</td>
+              <td>-24</td>
+            </tr>
+            <tr class="z4">
+              <td>17º</td>
+              <td>Heidenheim</td>
+              <td><strong>26</strong></td>
+              <td>34</td>
+              <td>6</td>
+              <td>8</td>
+              <td>20</td>
+              <td>41</td>
+              <td>72</td>
+              <td>-31</td>
+            </tr>
+            <tr class="z4">
+              <td>18º</td>
+              <td>St. Pauli</td>
+              <td><strong>26</strong></td>
+              <td>34</td>
+              <td>6</td>
+              <td>8</td>
+              <td>20</td>
+              <td>29</td>
+              <td>60</td>
+              <td>-31</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Aplicativo desenvolvido focado em acessibilidade visual e sonora. Use as teclas Tab e Shift+Tab para navegar por teclado.</p>
+  </footer>
+
+  <!-- SCRIPT DE INTERATIVIDADE E VOZ -->
+  <script>
+    let currentScale = 1;
+
+    // ALTERAR TAMANHO DA FONTE
+    function changeFontSize(delta) {
+      currentScale += delta * 0.15;
+      if (currentScale < 0.8) currentScale = 0.8;
+      if (currentScale > 1.8) currentScale = 1.8;
+      document.documentElement.style.setProperty('--font-scale', currentScale);
+    }
+
+    // CONTROLE DE TEMAS DE ALTO CONTRASTE
+    function toggleTheme(theme) {
+      document.body.classList.remove('theme-yellow-black', 'theme-light');
+      if (theme === 'yellow-black') {
+        document.body.classList.add('theme-yellow-black');
+      } else if (theme === 'light') {
+        document.body.classList.add('theme-light');
+      }
+    }
+
+    // MUDAR DE CAMPEONATO (ABAS)
+    function switchLeague(leagueId) {
+      // Esconder todas as seções
+      const sections = document.querySelectorAll('.league-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+
+      // Desmarcar botões
+      const buttons = document.querySelectorAll('.nav-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+
+      // Ativar seção e botão selecionado
+      const activeSection = document.getElementById(leagueId);
+      const activeBtn = document.getElementById('tab-' + leagueId);
+
+      if (activeSection && activeBtn) {
+        activeSection.classList.add('active');
+        activeBtn.classList.add('active');
+        activeBtn.setAttribute('aria-selected', 'true');
+      }
+
+      // Parar qualquer áudio anterior
+      stopSpeech();
+    }
+
+    // LEITOR EM VOZ ALTA (WEB SPEECH API)
+    function readText(text) {
+      stopSpeech(); // Para leituras anteriores
+
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'pt-BR';
+        utterance.rate = 0.95; // Velocidade ligeiramente mais lenta para maior clareza
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert('Seu navegador não suporta leitura em voz alta.');
+      }
+    }
+
+    // LER SEÇÃO COMPLETA
+    function readSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        // Extrai todo o texto da seção visível
+        const textToRead = section.innerText.replace(/🔊 Ouvir [^\n]+/g, '');
+        readText(textToRead);
+      }
+    }
+
+    // PARAR FALA
+    function stopSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+  </script>
+</body>
+</html>
